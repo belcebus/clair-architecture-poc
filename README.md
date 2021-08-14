@@ -191,15 +191,13 @@ TODO: realizar análisis remoto
 
 Clair no dispone de un `clairctl oficial` y en su lugar te redirige al cliente ubicado en el proyecto [jgsqware/clairctl](https://github.com/jgsqware/clairctl)
 
-debes logar primero el dockerhub
-
-    docker login
-
 ### Comandos de scan `clairctl`
 
 #### Análisis remoto
 
-if you want to analyze official images, you need to issue the docker login command.
+Debes logar primero el registro de imágenes si vas a analizar imágenes oficiales. El login debe hacerse dentro del contenedor por lo que se puede ejecutar este comando (previa sustitución de las variables)
+
+    docker exec -it clairctl docker login -u ${username} -p ${password | token}
 
 ##### vulnerables/web-dvwa
 
