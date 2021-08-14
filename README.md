@@ -64,12 +64,10 @@ Creamos el volumen para el almacenamiento de la base de datos y la red del conte
 
     docker volume create postgres-volume
 
-    docker network create postgres-network
-
     docker container run \
     --detach \
     --name postgres \
-    --network postgres-network \
+    --network clair-network \
     --rm \
     --entrypoint docker-entrypoint.sh \
     --volume postgres-volume:/var/lib/postgresql/data:rw \
@@ -79,16 +77,12 @@ Creamos el volumen para el almacenamiento de la base de datos y la red del conte
     postgres:alpine3.14 \
     postgres
 
-    docker network connect clair-network postgres
-
 ## postgres (9.6.23)
 <!-- sha256:0c544a9de02082855b4ee592d59685403a8b51acdcd559cef4140ad9ef1396bd -->
 
 Creamos el volumen para el almacenamiento de la base de datos y la red del contenedor. Después levantanmos el contenedor y lo añadimos también a la red `clair-network`
 
     docker volume create postgres-volume
-
-    docker network create postgres-network
 
     docker container run \
     --detach \
@@ -102,8 +96,6 @@ Creamos el volumen para el almacenamiento de la base de datos y la red del conte
     --env POSTGRES_PASSWORD=clair \
     postgres:9.6.23 \
     postgres
-
-    //docker network connect clair-network postgres
 
 ## clairctl (master)
 <!-- sha256:663236e4373c4857e20d4e568eff3280657b9b97648b4e510484d4ee4ff64bef -->
