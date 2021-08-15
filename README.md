@@ -273,9 +273,11 @@ Resultado:
 
 ##### jgsqware/clairctl:master (V)
 
+    docker tag jgsqware/clairctl:master jgsqware/clairctl:latest
+
 Comando para análisis local:
 
-    docker exec clairctl clairctl analyze -l jgsqware/clairctl:master --log-level Debug
+    docker exec clairctl clairctl analyze -l jgsqware/clairctl --log-level Debug
     
 Resultado:
     
@@ -289,7 +291,7 @@ Resultado:
 
 Comando para reporte:
 
-    docker exec clairctl clairctl report -l jgsqware/clairctl:master --log-level Debug
+    docker exec clairctl clairctl report -l jgsqware/clairctl --log-level Debug
 
 Resultado:
 
@@ -359,6 +361,24 @@ Resultado:
         client quit unexpectedly
         2021-08-13 20:47:15.726099 C | cmd: pushing image "jgsqware/clairctl:master": receiving http error: 404
 
+### Clair 2.1.7
+
+#### Análisis remoto
+
+* Si no estas logado a repositorio
+
+      2021-08-15 06:38:45.004296 D | clair: auth.insecureSkipVerify: true
+      2021-08-15 06:38:45.004708 D | clair: request.URL.String(): https://registry-1.docker.io/v2/jgsqware/clairctl/blobs/         sha256:6f821164d5b7ec94868795c1fb8dc6fd7d1fe51e04f97a6cf3a487868f2f5d68
+      2021-08-15 06:38:45.448696 I | clair: pull from clair is unauthorized
+      2021-08-15 06:38:46.338362 I | clair: adding layer 1/2 [sha256:6f821]: receiving http error: 400
+      client quit unexpectedly
+      2021-08-15 06:38:46.338514 C | cmd: pushing image "jgsqware/clairctl:latest": receiving http error: 400
+
+#### Análisis local
+
+* Analizar una imagen que no sea latest:
+
+        
 
 ## Otros proyectos a revisar
 
@@ -373,3 +393,11 @@ https://github.com/optiopay/klar
 Analiza las imágenes (entre otras cosas) de un registro:
 
 https://github.com/genuinetools/reg#vulnerability-reports
+
+
+## Limpiar el sistema
+
+    docker logout
+    docker stop clairctl clair postgres
+    docker network prune -f
+    docker volume prune -f
