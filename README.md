@@ -1,4 +1,4 @@
-# clair-test
+# clair architecture POC
 
 ## TOC
 
