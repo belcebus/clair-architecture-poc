@@ -73,8 +73,9 @@ Creamos el registro de imágenes docker para los análisis locales con el client
     --entrypoint /entrypoint.sh \
     --name registry \
     --network clair-network \
+    -p 5000:5000 \
     --rm \
-    --volume registry-volume:/var/lib/registry:rw \ 
+    --volume registry-volume:/var/lib/registry:rw \
     registry:2.7.1 \
     /etc/docker/registry/config.yml
 
@@ -517,6 +518,6 @@ https://github.com/genuinetools/reg#vulnerability-reports
 ## Limpiar el sistema
 
     docker logout
-    docker stop clairctl clair postgres
+    docker stop clairctl clair postgres registry
     docker network prune -f
     docker volume prune -f
