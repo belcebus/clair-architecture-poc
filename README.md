@@ -203,18 +203,36 @@ De carga de updaters
 
 * vulnerables/web-dvwa
 
-      docker exec clair clairctl report -o json vulnerables/web-dvwa | jq > clair/reports/clair_remote.json
+      docker exec clair clairctl report -o json vulnerables/web-dvwa | jq > clair/reports/vulnerables_web-dvwa_latest_remote.json
   
   Extracción de los códigos de vulnerabilidad
 
       docker exec clair clairctl report \
       -o json \
-      vulnerables/web-dvwa:latest@sha256:dae203fe11646a86937bf04db0079adef295f426da68a92b40e3b181f337daa7 \
-      | jq '.vulnerabilities[].name' > clair/reports/clair_remote_cves.txt
+      vulnerables/web-dvwa:latest \
+      | jq '.vulnerabilities[].name' > clair/reports/vulnerables_web-dvwa_latest_remote_cves.txt
 
 * jgsqware/clairctl:master
 
-  TODO: Hacer análisis remoto para jgsqware/clairctl
+      docker exec clair clairctl report -o json jgsqware/clairctl:master | jq > clair/reports/jgsqware_clairctl_master_remote.json
+
+    Extracción de los códigos de vulnerabilidad
+
+      docker exec clair clairctl report \
+      -o json \
+      jgsqware/clairctl:master \
+      | jq '.vulnerabilities[].name' > clair/reports/jgsqware_clairctl_master_remote_cves.txt
+
+* alpine:3.14
+
+      docker exec clair clairctl report -o json alpine:3.14 | jq > clair/reports/alpine_3.14_remote.json
+
+    Extracción de los códigos de vulnerabilidad
+
+      docker exec clair clairctl report \
+      -o json \
+      alpine:3.14 \
+      | jq '.vulnerabilities[].name' > clair/reports/alpine_3.14_remote_cves.txt
 
 #### Análisis local con `clairctl oficial`
 

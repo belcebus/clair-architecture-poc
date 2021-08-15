@@ -1,0 +1,306 @@
+{
+  "manifest_hash": "sha256:be9bdc0ef8e96dbc428dc189b31e2e3b05523d96d12ed627c37aa2936653258c",
+  "packages": {
+    "238": {
+      "id": "238",
+      "name": "scanelf",
+      "version": "1.3.2-r0",
+      "kind": "binary",
+      "source": {
+        "id": "237",
+        "name": "pax-utils",
+        "version": "1.3.2-r0",
+        "kind": "source"
+      },
+      "arch": "x86_64"
+    },
+    "222": {
+      "id": "222",
+      "name": "alpine-keys",
+      "version": "2.3-r1",
+      "kind": "binary",
+      "source": {
+        "id": "221",
+        "name": "alpine-keys",
+        "version": "2.3-r1",
+        "kind": "source"
+      },
+      "arch": "x86_64"
+    },
+    "216": {
+      "id": "216",
+      "name": "musl",
+      "version": "1.2.2-r3",
+      "kind": "binary",
+      "source": {
+        "id": "215",
+        "name": "musl",
+        "version": "1.2.2-r3",
+        "kind": "source"
+      },
+      "arch": "x86_64"
+    },
+    "236": {
+      "id": "236",
+      "name": "apk-tools",
+      "version": "2.12.7-r0",
+      "kind": "binary",
+      "source": {
+        "id": "235",
+        "name": "apk-tools",
+        "version": "2.12.7-r0",
+        "kind": "source"
+      },
+      "arch": "x86_64"
+    },
+    "232": {
+      "id": "232",
+      "name": "ssl_client",
+      "version": "1.33.1-r3",
+      "kind": "binary",
+      "source": {
+        "id": "217",
+        "name": "busybox",
+        "version": "1.33.1-r3",
+        "kind": "source"
+      },
+      "arch": "x86_64"
+    },
+    "226": {
+      "id": "226",
+      "name": "libssl1.1",
+      "version": "1.1.1k-r0",
+      "kind": "binary",
+      "source": {
+        "id": "223",
+        "name": "openssl",
+        "version": "1.1.1k-r0",
+        "kind": "source"
+      },
+      "arch": "x86_64"
+    },
+    "228": {
+      "id": "228",
+      "name": "ca-certificates-bundle",
+      "version": "20191127-r5",
+      "kind": "binary",
+      "source": {
+        "id": "227",
+        "name": "ca-certificates",
+        "version": "20191127-r5",
+        "kind": "source"
+      },
+      "arch": "x86_64"
+    },
+    "220": {
+      "id": "220",
+      "name": "alpine-baselayout",
+      "version": "3.2.0-r16",
+      "kind": "binary",
+      "source": {
+        "id": "219",
+        "name": "alpine-baselayout",
+        "version": "3.2.0-r16",
+        "kind": "source"
+      },
+      "arch": "x86_64"
+    },
+    "242": {
+      "id": "242",
+      "name": "libc-utils",
+      "version": "0.7.2-r3",
+      "kind": "binary",
+      "source": {
+        "id": "241",
+        "name": "libc-dev",
+        "version": "0.7.2-r3",
+        "kind": "source"
+      },
+      "arch": "x86_64"
+    },
+    "230": {
+      "id": "230",
+      "name": "libretls",
+      "version": "3.3.3p1-r2",
+      "kind": "binary",
+      "source": {
+        "id": "229",
+        "name": "libretls",
+        "version": "3.3.3p1-r2",
+        "kind": "source"
+      },
+      "arch": "x86_64"
+    },
+    "234": {
+      "id": "234",
+      "name": "zlib",
+      "version": "1.2.11-r3",
+      "kind": "binary",
+      "source": {
+        "id": "233",
+        "name": "zlib",
+        "version": "1.2.11-r3",
+        "kind": "source"
+      },
+      "arch": "x86_64"
+    },
+    "224": {
+      "id": "224",
+      "name": "libcrypto1.1",
+      "version": "1.1.1k-r0",
+      "kind": "binary",
+      "source": {
+        "id": "223",
+        "name": "openssl",
+        "version": "1.1.1k-r0",
+        "kind": "source"
+      },
+      "arch": "x86_64"
+    },
+    "240": {
+      "id": "240",
+      "name": "musl-utils",
+      "version": "1.2.2-r3",
+      "kind": "binary",
+      "source": {
+        "id": "215",
+        "name": "musl",
+        "version": "1.2.2-r3",
+        "kind": "source"
+      },
+      "arch": "x86_64"
+    },
+    "218": {
+      "id": "218",
+      "name": "busybox",
+      "version": "1.33.1-r3",
+      "kind": "binary",
+      "source": {
+        "id": "217",
+        "name": "busybox",
+        "version": "1.33.1-r3",
+        "kind": "source"
+      },
+      "arch": "x86_64"
+    }
+  },
+  "distributions": {},
+  "repository": {},
+  "environments": {
+    "240": [
+      {
+        "package_db": "lib/apk/db/installed",
+        "introduced_in": "sha256:29291e31a76a7e560b9b7ad3cada56e8c18d50a96cca8a2573e4f4689d7aca77",
+        "distribution_id": "",
+        "repository_ids": null
+      }
+    ],
+    "220": [
+      {
+        "package_db": "lib/apk/db/installed",
+        "introduced_in": "sha256:29291e31a76a7e560b9b7ad3cada56e8c18d50a96cca8a2573e4f4689d7aca77",
+        "distribution_id": "",
+        "repository_ids": null
+      }
+    ],
+    "226": [
+      {
+        "package_db": "lib/apk/db/installed",
+        "introduced_in": "sha256:29291e31a76a7e560b9b7ad3cada56e8c18d50a96cca8a2573e4f4689d7aca77",
+        "distribution_id": "",
+        "repository_ids": null
+      }
+    ],
+    "234": [
+      {
+        "package_db": "lib/apk/db/installed",
+        "introduced_in": "sha256:29291e31a76a7e560b9b7ad3cada56e8c18d50a96cca8a2573e4f4689d7aca77",
+        "distribution_id": "",
+        "repository_ids": null
+      }
+    ],
+    "236": [
+      {
+        "package_db": "lib/apk/db/installed",
+        "introduced_in": "sha256:29291e31a76a7e560b9b7ad3cada56e8c18d50a96cca8a2573e4f4689d7aca77",
+        "distribution_id": "",
+        "repository_ids": null
+      }
+    ],
+    "218": [
+      {
+        "package_db": "lib/apk/db/installed",
+        "introduced_in": "sha256:29291e31a76a7e560b9b7ad3cada56e8c18d50a96cca8a2573e4f4689d7aca77",
+        "distribution_id": "",
+        "repository_ids": null
+      }
+    ],
+    "216": [
+      {
+        "package_db": "lib/apk/db/installed",
+        "introduced_in": "sha256:29291e31a76a7e560b9b7ad3cada56e8c18d50a96cca8a2573e4f4689d7aca77",
+        "distribution_id": "",
+        "repository_ids": null
+      }
+    ],
+    "228": [
+      {
+        "package_db": "lib/apk/db/installed",
+        "introduced_in": "sha256:29291e31a76a7e560b9b7ad3cada56e8c18d50a96cca8a2573e4f4689d7aca77",
+        "distribution_id": "",
+        "repository_ids": null
+      }
+    ],
+    "232": [
+      {
+        "package_db": "lib/apk/db/installed",
+        "introduced_in": "sha256:29291e31a76a7e560b9b7ad3cada56e8c18d50a96cca8a2573e4f4689d7aca77",
+        "distribution_id": "",
+        "repository_ids": null
+      }
+    ],
+    "222": [
+      {
+        "package_db": "lib/apk/db/installed",
+        "introduced_in": "sha256:29291e31a76a7e560b9b7ad3cada56e8c18d50a96cca8a2573e4f4689d7aca77",
+        "distribution_id": "",
+        "repository_ids": null
+      }
+    ],
+    "238": [
+      {
+        "package_db": "lib/apk/db/installed",
+        "introduced_in": "sha256:29291e31a76a7e560b9b7ad3cada56e8c18d50a96cca8a2573e4f4689d7aca77",
+        "distribution_id": "",
+        "repository_ids": null
+      }
+    ],
+    "242": [
+      {
+        "package_db": "lib/apk/db/installed",
+        "introduced_in": "sha256:29291e31a76a7e560b9b7ad3cada56e8c18d50a96cca8a2573e4f4689d7aca77",
+        "distribution_id": "",
+        "repository_ids": null
+      }
+    ],
+    "224": [
+      {
+        "package_db": "lib/apk/db/installed",
+        "introduced_in": "sha256:29291e31a76a7e560b9b7ad3cada56e8c18d50a96cca8a2573e4f4689d7aca77",
+        "distribution_id": "",
+        "repository_ids": null
+      }
+    ],
+    "230": [
+      {
+        "package_db": "lib/apk/db/installed",
+        "introduced_in": "sha256:29291e31a76a7e560b9b7ad3cada56e8c18d50a96cca8a2573e4f4689d7aca77",
+        "distribution_id": "",
+        "repository_ids": null
+      }
+    ]
+  },
+  "vulnerabilities": {},
+  "package_vulnerabilities": {},
+  "enrichments": {}
+}
