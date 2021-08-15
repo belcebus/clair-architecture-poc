@@ -11,7 +11,7 @@
   * Postgres
   * Clairctl
   * Clair 4.2.0
-    * Traza de finalización de carga de updaters
+    * Traza de finalización
   * Clair 2.1.7
     * Traza de finalización de carga de updaters
 * Análisis
@@ -36,7 +36,7 @@
       * jgsqware/clairctl
       * alpine:3.14
 * Recopilación de errores
-  * Clair 4.20
+  * Clair 4.2.0
     * `clairctl`
       * Análisis local
   * Clair 2.1.7
@@ -74,7 +74,7 @@ Creamos el registro de imágenes docker para los análisis locales con el client
     --name registry \
     --network clair-network \
     --rm \
-    --volume registry-volume:/var/lib/registry:rw \
+    --volume registry-volume:/var/lib/registry:rw \ 
     registry:2.7.1 \
     /etc/docker/registry/config.yml
 
@@ -161,9 +161,15 @@ Este contenedor también dispone de un cliente de Clair que llamaremos `clairctl
     quay.io/projectquay/clair:4.2.0 \
     -- /bin/clair
 
-#### Traza de finalización de carga de updaters
+#### Traza de finalización
 
+De arranque de la aplicación:
 
+    {"level":"info","component":"main","version":"v4.2.0","time":"2021-08-15T16:31:11Z","message":"ready"}
+
+De carga de updaters
+
+    ?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿
 
 ### Clair (v2.1.7)
 <!-- sha256:0962dd91c2f5de60ea2c0019fb275bc463fce6f59db96597e09e645627439909 --> 
