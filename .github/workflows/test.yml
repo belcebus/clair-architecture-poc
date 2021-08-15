@@ -15,7 +15,7 @@ jobs:
     - name: add hosts entry
       run: |
         cat /etc/hosts
-        echo "127.0.0.1 registry" >> /etc/hosts
+        echo "127.0.0.1 registry" | sudo tee -a /etc/hosts
         ping registry
         nslookup registry
         
