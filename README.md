@@ -9,6 +9,7 @@
 * Clairctl
 * Clair 4.2.0
 * Clair 2.1.7
+  * Traza de finalización de carga de updaters
 * Análisis Clair 4.2.0
   * Clairctl oficial
     * Análisis remoto
@@ -43,16 +44,16 @@ Creamos la red para Clair y aquellos contenedores que necesitan conexión con Cl
 ## docker registry (2.7.1)
 <!-- sha256:42043edfae481178f07aa077fa872fcc242e276d302f4ac2026d9d2eb65b955f -->
 
-Creamos el registro de imágenes docker para los análisis locales con el cliente `clairctl oficial`
+Creamos el registro de imágenes docker para los análisis locales con el cliente `clairctl oficial`. Creamos un volumen de almacenamiento y lo conectamos a la red `clair-network`:
 
     docker volume create registry-volume
 
     docker container run \
     --detach \
+    --entrypoint /entrypoint.sh \
     --name registry \
     --network clair-network \
     --rm \
-    --entrypoint /entrypoint.sh \
     --volume registry-volume:/var/lib/registry:rw \
     registry:2.7.1 \
     /etc/docker/registry/config.yml
@@ -60,40 +61,40 @@ Creamos el registro de imágenes docker para los análisis locales con el client
 ## postgres (alpine3.14)
 <!-- sha256:c72d0da357ccbe11f769b3b4319ec3281014447d1b6dd9f636cf9dfffe9ed258 -->
 
-Creamos el volumen para el almacenamiento de la base de datos y la red del contenedor. Después levantanmos el contenedor y lo añadimos también a la red `clair-network`
+Levantanmos el contenedor y lo añadimos también a la red `clair-network`
 
     docker volume create postgres-volume
 
     docker container run \
     --detach \
+    --entrypoint docker-entrypoint.sh \
+    --env POSTGRES_DB=clair \
+    --env POSTGRES_PASSWORD=clair \
+    --env POSTGRES_USER=clair \
     --name postgres \
     --network clair-network \
     --rm \
-    --entrypoint docker-entrypoint.sh \
     --volume postgres-volume:/var/lib/postgresql/data:rw \
-    --env POSTGRES_DB=clair \
-    --env POSTGRES_USER=clair \
-    --env POSTGRES_PASSWORD=clair \
     postgres:alpine3.14 \
     postgres
 
 ## postgres (9.6.23)
 <!-- sha256:0c544a9de02082855b4ee592d59685403a8b51acdcd559cef4140ad9ef1396bd -->
 
-Creamos el volumen para el almacenamiento de la base de datos y la red del contenedor. Después levantanmos el contenedor y lo añadimos también a la red `clair-network`
+Levantanmos el contenedor y lo añadimos también a la red `clair-network`
 
     docker volume create postgres-volume
 
     docker container run \
     --detach \
+    --entrypoint docker-entrypoint.sh \
+    --env POSTGRES_DB=clair \
+    --env POSTGRES_PASSWORD=clair \
+    --env POSTGRES_USER=clair \
     --name postgres \
     --network clair-network \
     --rm \
-    --entrypoint docker-entrypoint.sh \
     --volume postgres-volume:/var/lib/postgresql/data:rw \
-    --env POSTGRES_DB=clair \
-    --env POSTGRES_USER=clair \
-    --env POSTGRES_PASSWORD=clair \
     postgres:9.6.23 \
     postgres
 
@@ -109,12 +110,12 @@ Levantamos el contenedor con la última imagen disponible y lo conectamos a la r
     --name clairctl \
     --network clair-network \
     --rm \
+    --user root \
     --volume ${PWD}/clairctl/reports/:/reports/:rw \
     --volume /tmp:/tmp:rw \
     --volume ${PWD}/clairctl/clairctl.yml:/home/clairctl/clairctl.yml \
     --volume /var/run/docker.sock:/var/run/docker.sock:ro \
     --workdir /home/clairctl/ \
-    --user root \
     jgsqware/clairctl:master
 
 ## clair (4.2.0)
@@ -125,10 +126,10 @@ Este contenedor también dispone de un cliente de Clair que llamaremos `clairctl
 
     docker container run \
     --detach \
+    --entrypoint /usr/local/bin/dumb-init \
     --name clair \
     --network clair-network \
     --rm \
-    --entrypoint /usr/local/bin/dumb-init \
     --volume ${PWD}/clair/config:/config:ro \
     --volume ${PWD}/clair/reports:/reports:rw \
     --workdir /run \
@@ -140,15 +141,23 @@ Este contenedor también dispone de un cliente de Clair que llamaremos `clairctl
 
     docker container run \
     --detach \
+    --entrypoint /usr/bin/dumb-init \
     --name clair \
     --rm \
     --network clair-network \
     --volume ${PWD}/clair/config/config_v2.1.7.yaml:/etc/clair/config.yaml:ro \
     --volume ${PWD}/clair/reports:/reports:rw \
     --workdir /go/clair/ \
-    --entrypoint /usr/bin/dumb-init \
     quay.io/coreos/clair:v2.1.7 \
     -- /clair
+
+### Traza de finalización de carga de updaters
+
+    {"Event":"finished fetching","Level":"info","Location":"updater.go:253","Time":"2021-08-15 07:49:34.272604","updater name":"rhel"}
+    {"Event":"finished fetching","Level":"info","Location":"updater.go:253","Time":"2021-08-15 07:49:34.884695","updater name":"oracle"}
+    {"Event":"finished fetching","Level":"info","Location":"updater.go:253","Time":"2021-08-15 07:49:36.562141","updater name":"amzn2"}
+    {"Event":"finished fetching","Level":"info","Location":"updater.go:253","Time":"2021-08-15 07:49:37.102230","updater name":"alpine"}
+    {"Event":"finished fetching","Level":"info","Location":"updater.go:253","Time":"2021-08-15 07:49:37.349593","updater name":"amzn1"}
 
 ## Análisis Clair 4.2.0
 
@@ -297,6 +306,36 @@ Resultado:
 
 [analysis-jgsqware-clairctl-master-local.html](clairctl/reports/html/analysis-jgsqware-clairctl-master-local.html)
 
+##### alpine:3.14.1 (V)
+
+Primero debemos cambiar la etiqueta a latest (detalles en la sección de [errores](#recopilación-de-errores)):
+
+    docker tag alpine:3.14.1 alpine:latest
+
+Comando para análisis local:
+    
+    docker exec clairctl clairctl analyze -l alpine --log-level Debug
+
+Resultado:
+
+    Image: docker.io/alpine:latest
+     
+     Unknown: 0
+     Negligible: 0
+     Low: 1
+     Medium: 0
+     High: 0
+     Critical: 0
+     Defcon1: 0
+
+Comando para reporte:
+
+    docker exec clairctl clairctl report -l alpine --log-level Debug
+
+Resultado:
+
+[analysis-alpine-latest-local.html](clairctl/reports/html/analysis-alpine-latest-local.html)
+
 ## Recopilación de errores
 
 ### Errores con Clair 4.20
@@ -371,6 +410,23 @@ Resultado:
       2021-08-15 06:38:46.338362 I | clair: adding layer 1/2 [sha256:6f821]: receiving http error: 400
       client quit unexpectedly
       2021-08-15 06:38:46.338514 C | cmd: pushing image "jgsqware/clairctl:latest": receiving http error: 400
+
+* Fat Manifests de DockerHub no están soportados. Si intentas analizar una imagen moderna como por ejemplo alpine:latest desde docker hub (si la escaneas en local funciona) tienes el siguiente error que no será resuelto debido a la falta de mantenimiento del proyecto [#93](https://github.com/jgsqware/clairctl/issues/93):
+
+      2021-08-15 07:15:19.812649 D | config: cleaning temporary local repository
+      cleaning temporary local repository: remove /tmp/fseventsd-uuid: operation not permitted
+      /home/clairctl # clairctl analyze alpine --log-level debug
+      2021-08-15 07:15:25.792174 D | config: Using config file: /home/clairctl/clairctl.yml
+      2021-08-15 07:15:25.792857 D | dockerdist: Downloading manifest for alpine
+      2021-08-15 07:15:25.793243 D | dockerdist: Retrieving repository client
+      2021-08-15 07:15:27.198891 D | dockerdist: endpoint.TLSConfig.InsecureSkipVerify: true
+      2021-08-15 07:15:29.118765 D | dockerdist: manifest type: *manifestlist.DeserializedManifestList
+      2021-08-15 07:15:29.118818 I | dockerdist: Could not verify manifest for image alpine: not signed
+      2021-08-15 07:15:29.118855 I | config: retrieving interface for local IP
+      2021-08-15 07:15:29.119235 D | config: no interface provided, looking for docker0
+      2021-08-15 07:15:29.120111 D | config: docker0 not found, looking for first connected broadcast interface
+      client quit unexpectedly
+      2021-08-15 07:15:29.121088 C | cmd: pushing image "alpine:latest": unsupported Schema version
 
 #### Análisis local
 
