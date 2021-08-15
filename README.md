@@ -3,6 +3,8 @@
 ## TOC
 
 * Arquitectura
+  * Clair 4.2.0
+  * Clair 2.1.7
 * Clair Network
 * Docker Registry
 * Postgres
@@ -33,7 +35,13 @@
 
 ## Arquitectura
 
-![arquitectura](./clair-arch-2021-08-14.png)
+### Clair 4.2.0
+
+![4.2.0](arquitectura/clair-arch-4.2.0.png)
+
+### Clair 2.1.7
+
+![2.1.7](arquitectura/clair-arch-2.1.7.png)
 
 ## clair network
 
@@ -58,9 +66,12 @@ Creamos el registro de imágenes docker para los análisis locales con el client
     registry:2.7.1 \
     /etc/docker/registry/config.yml
 
-## postgres (alpine3.14)
+<!-- 
+## postgres (alpine3.14) 
+-->
 <!-- sha256:c72d0da357ccbe11f769b3b4319ec3281014447d1b6dd9f636cf9dfffe9ed258 -->
 
+<!--
 Levantanmos el contenedor y lo añadimos también a la red `clair-network`
 
     docker volume create postgres-volume
@@ -77,6 +88,7 @@ Levantanmos el contenedor y lo añadimos también a la red `clair-network`
     --volume postgres-volume:/var/lib/postgresql/data:rw \
     postgres:alpine3.14 \
     postgres
+-->
 
 ## postgres (9.6.23)
 <!-- sha256:0c544a9de02082855b4ee592d59685403a8b51acdcd559cef4140ad9ef1396bd -->
