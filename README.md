@@ -218,16 +218,37 @@ De carga de updaters
 
 #### Análisis local con `clairctl oficial`
 
+Lo primero es añadir el docker registry 'registry' al /etc/hosts como localhost
+
+    echo "127.0.0.1 registry" | sudo tee -a /etc/hosts
+
+* vulnerables/web-dvwa
+
+  Renombrar la images para que suba al resitro local:
+
+      docker tag vulnerables/web-dvwa registry:5000/vulnerables/web-dvwa:latest
+
+  Subir la imagen al registro:
+
+      docker push registry:5000/vulnerables/web-dvwa:latest
+
+  Y ejecutar el análisis indicando el registry al que se ha subido la imagen:
+
+      docker exec clair clairctl -D report registry:5000/vulnerables/web-dvwa:latest
+
+  Resultado:
+
+
+
 TODO: realizar análisis local usando el docker registry
 
 #### Análisis remoto con `clairctl`
 
-TODO: realizar análisis remoto
+__No es compatible con el API de Clair 4.2.0__
 
 #### Análisis local con `clairctl`
 
-TODO: realizar análisis remoto
-clairctl analyze -l jgsqware/clairctl:master --log-level Debug
+__No es compatible con el API de Clair 4.2.0__
 
 ### Clair 2.1.7
 
@@ -381,10 +402,10 @@ Debes logar primero el registro de imágenes si vas a analizar imágenes oficial
 
 * Sin DinD
     
-        2021-08-13 20:40:32.022269 D | config: Using config file: /home/clairctl/clairctl.yml2021-08-13 20:40:32.024382 D | dockercli: docker image to save: jgsqware/clairctl:master
-        2021-08-13 20:40:32.024940 D | dockercli: saving in: /tmp/jgsqware/clairctl/blobs
-        client quit unexpectedly
-        2021-08-13 20:40:32.026821 C | cmd: retrieving manifest for "jgsqware/clairctl:master": cannot save image jgsqware/clairctl:master: Cannot connect to the Docker daemon at unix:///var/run/docker.sock. Is the docker daemon running?
+      2021-08-13 20:40:32.022269 D | config: Using config file: /home/clairctl/clairctl.yml2021-08-13 20:40:32.024382 D | dockercli: docker image to save:  jgsqware/clairctl:master
+      2021-08-13 20:40:32.024940 D | dockercli: saving in: /tmp/jgsqware/clairctl/blobs
+      client quit unexpectedly
+      2021-08-13 20:40:32.026821 C | cmd: retrieving manifest for "jgsqware/clairctl:master": cannot save image jgsqware/clairctl:master: Cannot connect to the  Docker daemon at unix:///var/run/docker.sock. Is the docker daemon running?
 
 * Con DinD y Sin usuario root:
 
@@ -396,44 +417,51 @@ Debes logar primero el registro de imágenes si vas a analizar imágenes oficial
 
 * Con DinD y usuario root
 
-        2021-08-13 20:42:27.988437 D | config: Using config file: /home/clairctl/clairctl.yml2021-08-13 20:42:27.991659 D | dockercli: docker image to save: jgsqware/clairctl:master
-        2021-08-13 20:42:27.991956 D | dockercli: saving in: /tmp/jgsqware/clairctl/blobs
-        2021-08-13 20:44:02.003124 I | config: retrieving interface for local IP
-        2021-08-13 20:44:02.003146 D | config: no interface provided, looking for docker0
-        2021-08-13 20:44:02.003270 D | config: docker0 not found, looking for first connected broadcast interface
-        2021-08-13 20:44:02.003991 I | server: Starting Server on 172.19.0.5:44480
-        2021-08-13 20:44:02.009143 I | config: retrieving interface for local IP
-        2021-08-13 20:44:02.009208 D | config: no interface provided, looking for docker0
-        2021-08-13 20:44:02.009972 D | config: docker0 not found, looking for first connected broadcast interface
-        2021-08-13 20:44:02.010219 I | clair: using http://172.19.0.5:44480/local as local url
-        2021-08-13 20:44:02.010246 I | clair: Pushing Layer 1/2 [d186ba14877c]
-        2021-08-13 20:44:02.010345 D | clair: Saving d186ba14877c7464fbbcb26a9847f0c916c5f81ad2172fed104c3f5c5f0c06e7[https://registry-1.docker.io/v2]
-        2021-08-13 20:44:02.014955 I | clair: adding layer 1/2 [d186ba14877c]: receiving http error: 404
-        client quit unexpectedly
-        2021-08-13 20:44:02.015024 C | cmd: pushing image "jgsqware/clairctl:master": receiving http error: 404
+      2021-08-13 20:42:27.988437 D | config: Using config file: /home/clairctl/clairctl.yml2021-08-13 20:42:27.991659 D | dockercli: docker image to save: jgsqware/clairctl:master
+      2021-08-13 20:42:27.991956 D | dockercli: saving in: /tmp/jgsqware/clairctl/blobs
+      2021-08-13 20:44:02.003124 I | config: retrieving interface for local IP
+      2021-08-13 20:44:02.003146 D | config: no interface provided, looking for docker0
+      2021-08-13 20:44:02.003270 D | config: docker0 not found, looking for first connected broadcast interface
+      2021-08-13 20:44:02.003991 I | server: Starting Server on 172.19.0.5:44480
+      2021-08-13 20:44:02.009143 I | config: retrieving interface for local IP
+      2021-08-13 20:44:02.009208 D | config: no interface provided, looking for docker0
+      2021-08-13 20:44:02.009972 D | config: docker0 not found, looking for first connected broadcast interface
+      2021-08-13 20:44:02.010219 I | clair: using http://172.19.0.5:44480/local as local url
+      2021-08-13 20:44:02.010246 I | clair: Pushing Layer 1/2 [d186ba14877c]
+      2021-08-13 20:44:02.010345 D | clair: Saving d186ba14877c7464fbbcb26a9847f0c916c5f81ad2172fed104c3f5c5f0c06e7[https://registry-1.docker.io/v2]
+      2021-08-13 20:44:02.014955 I | clair: adding layer 1/2 [d186ba14877c]: receiving http error: 404
+      client quit unexpectedly
+      2021-08-13 20:44:02.015024 C | cmd: pushing image "jgsqware/clairctl:master": receiving http error: 404
 
 * mismo error con el comando 
 
-        docker exec clairctl clairctl push -l jgsqware/clairctl:master --log-level Debug
+      docker exec clairctl clairctl push -l jgsqware/clairctl:master --log-level Debug
   
   lo que hace sospechar que el problema está en el push de la image.
 
-        2021-08-13 20:45:43.393222 D | config: Using config file: /home/clairctl/clairctl.yml
-        2021-08-13 20:45:43.393625 I | config: retrieving interface for local IP
-        2021-08-13 20:45:43.393936 D | config: no interface provided, looking for docker0
-        2021-08-13 20:45:43.395072 D | config: docker0 not found, looking for first connected broadcast interface
-        2021-08-13 20:45:43.396387 I | server: Starting Server on 172.19.0.5:44480
-        2021-08-13 20:45:43.404133 D | dockercli: docker image to save: jgsqware/clairctl:master
-        2021-08-13 20:45:43.404747 D | dockercli: saving in: /tmp/jgsqware/clairctl/blobs
-        2021-08-13 20:47:15.712315 I | config: retrieving interface for local IP
-        2021-08-13 20:47:15.712342 D | config: no interface provided, looking for docker0
-        2021-08-13 20:47:15.712483 D | config: docker0 not found, looking for first connected broadcast interface
-        2021-08-13 20:47:15.712916 I | clair: using http://172.19.0.5:44480/local as local url
-        2021-08-13 20:47:15.712943 I | clair: Pushing Layer 1/2 [d186ba14877c]
-        2021-08-13 20:47:15.713038 D | clair: Saving d186ba14877c7464fbbcb26a9847f0c916c5f81ad2172fed104c3f5c5f0c06e7[https://registry-1.docker.io/v2]
-        2021-08-13 20:47:15.726001 I | clair: adding layer 1/2 [d186ba14877c]: receiving http error: 404
-        client quit unexpectedly
-        2021-08-13 20:47:15.726099 C | cmd: pushing image "jgsqware/clairctl:master": receiving http error: 404
+      2021-08-13 20:45:43.393222 D | config: Using config file: /home/clairctl/clairctl.yml
+      2021-08-13 20:45:43.393625 I | config: retrieving interface for local IP
+      2021-08-13 20:45:43.393936 D | config: no interface provided, looking for docker0
+      2021-08-13 20:45:43.395072 D | config: docker0 not found, looking for first connected broadcast interface
+      2021-08-13 20:45:43.396387 I | server: Starting Server on 172.19.0.5:44480
+      2021-08-13 20:45:43.404133 D | dockercli: docker image to save: jgsqware/clairctl:master
+      2021-08-13 20:45:43.404747 D | dockercli: saving in: /tmp/jgsqware/clairctl/blobs
+      2021-08-13 20:47:15.712315 I | config: retrieving interface for local IP
+      2021-08-13 20:47:15.712342 D | config: no interface provided, looking for docker0
+      2021-08-13 20:47:15.712483 D | config: docker0 not found, looking for first connected broadcast interface
+      2021-08-13 20:47:15.712916 I | clair: using http://172.19.0.5:44480/local as local url
+      2021-08-13 20:47:15.712943 I | clair: Pushing Layer 1/2 [d186ba14877c]
+      2021-08-13 20:47:15.713038 D | clair: Saving d186ba14877c7464fbbcb26a9847f0c916c5f81ad2172fed104c3f5c5f0c06e7[https://registry-1.docker.io/v2]
+      2021-08-13 20:47:15.726001 I | clair: adding layer 1/2 [d186ba14877c]: receiving http error: 404
+      client quit unexpectedly
+      2021-08-13 20:47:15.726099 C | cmd: pushing image "jgsqware/clairctl:master": receiving http error: 404
+
+* usando el registro de imágenes local:
+
+      2021-08-15T19:02:11Z DBG using text output
+      2021-08-15T19:02:11Z DBG fetching ref=registry:5000/vulnerables/web-dvwa:latest
+      2021-08-15T19:02:11Z DBG  error="Get \"https://registry:5000/v2/\": http: server gave HTTP response to HTTPS client" ref=registry:5000/vulnerables/web-dvwa:latest
+      2021-08-15T19:02:11Z ERR  error="Get \"https://registry:5000/v2/\": http: server gave HTTP response to HTTPS client"
 
 ### Clair 2.1.7
 
