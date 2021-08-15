@@ -221,7 +221,7 @@ Comando para reporte
 
     docker exec clairctl clairctl report vulnerables/web-dvwa --log-level Debug
 
-[analysis-vulnerables-web-dvwa-latest.html](.clairctl/reports/html/analysis-vulnerables-web-dvwa-latest.html)
+[analysis-vulnerables-web-dvwa-latest.html](.clairctl/reports/html/analysis-vulnerables-web-dvwa-latest-remoto.html)
 
 ##### jgsqware/clairctl:master
 
@@ -243,7 +243,7 @@ Comando para reporte:
 
     docker exec clairctl clairctl report jgsqware/clairctl:master --log-level Debug
 
-[analysis-jgsqware-clairctl-master.html](./clairctl/reports/html/analysis-jgsqware-clairctl-master.html)
+[analysis-jgsqware-clairctl-master.html](./clairctl/reports/html/analysis-jgsqware-clairctl-master-remoto.html)
 
 #### Análisis local
 
