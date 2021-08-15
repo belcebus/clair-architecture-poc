@@ -299,9 +299,7 @@ Resultado:
 
 ## Recopilación de errores
 
-### Clair 4.20
-
-#### `clairctl`
+### Errores con Clair 4.20
 
 ##### Análisis local
 
@@ -361,11 +359,11 @@ Resultado:
         client quit unexpectedly
         2021-08-13 20:47:15.726099 C | cmd: pushing image "jgsqware/clairctl:master": receiving http error: 404
 
-### Clair 2.1.7
+### Errores con Clair 2.1.7
 
 #### Análisis remoto
 
-* Si no estas logado a repositorio
+* Si no estas logado al registro docker:
 
       2021-08-15 06:38:45.004296 D | clair: auth.insecureSkipVerify: true
       2021-08-15 06:38:45.004708 D | clair: request.URL.String(): https://registry-1.docker.io/v2/jgsqware/clairctl/blobs/         sha256:6f821164d5b7ec94868795c1fb8dc6fd7d1fe51e04f97a6cf3a487868f2f5d68
@@ -376,9 +374,38 @@ Resultado:
 
 #### Análisis local
 
-* Analizar una imagen que no sea latest:
+* Analizar una imagen que no sea latest como por ejemplo jgsqware/clairctl:master antes de haber analizado ninguna de sus layers:
+     
+      docker exec clairctl clairctl analyze -l jgsqware/clairctl:master --log-level Debug
 
+  el error es el también un 400:
+      
+      2021-08-15 06:54:00.969157 D | config: Using config file: /home/clairctl/clairctl.yml
+      2021-08-15 06:54:00.989961 D | dockercli: docker image to save: jgsqware/clairctl:master
+      2021-08-15 06:54:00.990023 D | dockercli: saving in: /tmp/jgsqware/clairctl/blobs
+      2021-08-15 06:55:17.878504 I | config: retrieving interface for local IP
+      2021-08-15 06:55:17.878528 D | config: no interface provided, looking for docker0
+      2021-08-15 06:55:17.878839 D | config: docker0 not found, looking for first connected broadcast interface
+      2021-08-15 06:55:17.885830 I | config: retrieving interface for local IP
+      2021-08-15 06:55:17.888319 D | config: no interface provided, looking for docker0
+      2021-08-15 06:55:17.888572 D | config: docker0 not found, looking for first connected broadcast interface
+      2021-08-15 06:55:17.888727 I | clair: using http://172.19.0.3:44480/local as local url
+      2021-08-15 06:55:17.888777 I | clair: Pushing Layer 1/2 [d186ba14877c]
+      2021-08-15 06:55:17.888899 D | clair: Saving d186ba14877c7464fbbcb26a9847f0c916c5f81ad2172fed104c3f5c5f0c06e7[https://registry-1.docker.io/v2]
+      2021-08-15 06:55:17.889443 I | server: Starting Server on 172.19.0.3:44480
+      2021-08-15 06:55:17.934463 I | clair: adding layer 1/2 [d186ba14877c]: receiving http error: 400
+      client quit unexpectedly
+      2021-08-15 06:55:17.941528 C | cmd: pushing image "jgsqware/clairctl:master": receiving http error: 400
         
+  Se soluciona retageando la imagen a latest:
+
+       docker tag jgsqware/clairctl:master jgsqware/clairctl:latest
+  
+  y ejecutando de nuevo el análisis sobre latest
+
+       docker exec clairctl clairctl analyze -l jgsqware/clairctl --log-level Debug
+
+  una vez que las capas están cargadas en Clair, puedes volver a ejecutar el análisis sobre la imagen inicial no latest: jgsqware/clairctl:master
 
 ## Otros proyectos a revisar
 
