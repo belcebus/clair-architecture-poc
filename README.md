@@ -3,53 +3,65 @@
 ## TOC
 
 * Arquitectura
+  * 4.2.0
+  * 2.1.7
+* Instalación
+  * Clair Network
+  * Docker Registry
+  * Postgres
+  * Clairctl
   * Clair 4.2.0
+    * Traza de finalización de carga de updaters
   * Clair 2.1.7
-* Clair Network
-* Docker Registry
-* Postgres
-* Clairctl
-* Clair 4.2.0
-* Clair 2.1.7
-  * Traza de finalización de carga de updaters
-* Análisis Clair 4.2.0
-  * Clairctl oficial
-    * Análisis remoto
+    * Traza de finalización de carga de updaters
+* Análisis
+  * Clair 4.2.0
+    * Análisis remoto `clairctl oficial`
       * vulnerables/web-dvwa
       * jgsqware/clairctl
-    * Análisis local
-  * `clairctl`
-    * Análisis remoto
-    * Análisis local
-* Análisis Clair 2.1.7
-  * Clairctl oficial
-  * `clairctl`
-    * Análisis remoto
+      * alpine:3.14
+    * Análisis local `clairctl oficial`
       * vulnerables/web-dvwa
       * jgsqware/clairctl
-    * Análisis local
-* ERRORES
+      * alpine:3.14
+    * Análisis remoto `clairctl`
+    * Análisis local `clairctl`
+  * Clair 2.1.7
+    * Análisis remoto `clairctl`
+      * vulnerables/web-dvwa
+      * jgsqware/clairctl
+      * alpine:3.14
+    * Análisis local `clairctl`
+      * vulnerables/web-dvwa
+      * jgsqware/clairctl
+      * alpine:3.14
+* Recopilación de errores
   * Clair 4.20
     * `clairctl`
       * Análisis local
+  * Clair 2.1.7
+* Otros proyectos a revisar
+* Limpieza del entorno
 
 ## Arquitectura
 
-### Clair 4.2.0
+### 4.2.0
 
 ![4.2.0](arquitectura/clair-arch-4.2.0.png)
 
-### Clair 2.1.7
+### 2.1.7
 
 ![2.1.7](arquitectura/clair-arch-2.1.7.png)
 
-## clair network
+## Instalación
+
+### clair network
 
 Creamos la red para Clair y aquellos contenedores que necesitan conexión con Clair como vimos en el diagrama anterior.
 
     docker network create clair-network
 
-## docker registry (2.7.1)
+### docker registry (2.7.1)
 <!-- sha256:42043edfae481178f07aa077fa872fcc242e276d302f4ac2026d9d2eb65b955f -->
 
 Creamos el registro de imágenes docker para los análisis locales con el cliente `clairctl oficial`. Creamos un volumen de almacenamiento y lo conectamos a la red `clair-network`:
@@ -90,7 +102,7 @@ Levantanmos el contenedor y lo añadimos también a la red `clair-network`
     postgres
 -->
 
-## postgres (9.6.23)
+### postgres (9.6.23)
 <!-- sha256:0c544a9de02082855b4ee592d59685403a8b51acdcd559cef4140ad9ef1396bd -->
 
 Levantanmos el contenedor y lo añadimos también a la red `clair-network`
@@ -110,7 +122,7 @@ Levantanmos el contenedor y lo añadimos también a la red `clair-network`
     postgres:9.6.23 \
     postgres
 
-## clairctl (master)
+### clairctl (master)
 <!-- sha256:663236e4373c4857e20d4e568eff3280657b9b97648b4e510484d4ee4ff64bef -->
 
 Este es el cliente de Clair no oficial. Se ejecuta desde un contenedor. El [proyecto](https://github.com/jgsqware/clairctl) está descontinuado desde el 2018.
@@ -130,7 +142,7 @@ Levantamos el contenedor con la última imagen disponible y lo conectamos a la r
     --workdir /home/clairctl/ \
     jgsqware/clairctl:master
 
-## clair (4.2.0)
+### clair (4.2.0)
 <!-- sha256:917df97fd182bf45d880649285b45e730a52e6cca4b70e3b0a810d4e39d43c9a -->
 
 Este el corazón del proceso, expone el API sonbre el que se lanzarán las consultas por parte de los clientes. También actualizará la base de datos con las vulnerablidades descargadas de los repositorios de vulnerabilidades oficiales.
@@ -149,7 +161,11 @@ Este contenedor también dispone de un cliente de Clair que llamaremos `clairctl
     quay.io/projectquay/clair:4.2.0 \
     -- /bin/clair
 
-## Clair (v2.1.7)
+#### Traza de finalización de carga de updaters
+
+
+
+### Clair (v2.1.7)
 <!-- sha256:0962dd91c2f5de60ea2c0019fb275bc463fce6f59db96597e09e645627439909 --> 
 
     docker container run \
@@ -164,7 +180,7 @@ Este contenedor también dispone de un cliente de Clair que llamaremos `clairctl
     quay.io/coreos/clair:v2.1.7 \
     -- /clair
 
-### Traza de finalización de carga de updaters
+#### Traza de finalización de carga de updaters
 
     {"Event":"finished fetching","Level":"info","Location":"updater.go:253","Time":"2021-08-15 07:49:34.272604","updater name":"rhel"}
     {"Event":"finished fetching","Level":"info","Location":"updater.go:253","Time":"2021-08-15 07:49:34.884695","updater name":"oracle"}
@@ -172,186 +188,187 @@ Este contenedor también dispone de un cliente de Clair que llamaremos `clairctl
     {"Event":"finished fetching","Level":"info","Location":"updater.go:253","Time":"2021-08-15 07:49:37.102230","updater name":"alpine"}
     {"Event":"finished fetching","Level":"info","Location":"updater.go:253","Time":"2021-08-15 07:49:37.349593","updater name":"amzn1"}
 
-## Análisis Clair 4.2.0
+## Análisis
 
-### Análisis con `clairctl oficial`
+### Clair 4.2.0
 
-#### Análisis de imágenes remotas
+#### Análisis remoto con `clairctl oficial`
 
-##### vulnerables/web-dvwa
+* vulnerables/web-dvwa
 
-    docker exec clair clairctl report -o json vulnerables/web-dvwa | jq > clair/reports/clair_remote.json
+      docker exec clair clairctl report -o json vulnerables/web-dvwa | jq > clair/reports/clair_remote.json
   
   Extracción de los códigos de vulnerabilidad
 
-    docker exec clair clairctl report \
-    -o json \
-    vulnerables/web-dvwa:latest@sha256:dae203fe11646a86937bf04db0079adef295f426da68a92b40e3b181f337daa7 \
-    | jq '.vulnerabilities[].name' > clair/reports/clair_remote_cves.txt
+      docker exec clair clairctl report \
+      -o json \
+      vulnerables/web-dvwa:latest@sha256:dae203fe11646a86937bf04db0079adef295f426da68a92b40e3b181f337daa7 \
+      | jq '.vulnerabilities[].name' > clair/reports/clair_remote_cves.txt
 
-##### jgsqware/clairctl:master
+* jgsqware/clairctl:master
 
-TODO: Hacer análisis remoto para jgsqware/clairctl
+  TODO: Hacer análisis remoto para jgsqware/clairctl
 
-#### Análisis local
+#### Análisis local con `clairctl oficial`
 
 TODO: realizar análisis local usando el docker registry
 
-### Análisis con `clairctl`
-
-#### Análisis remoto
+#### Análisis remoto con `clairctl`
 
 TODO: realizar análisis remoto
 
-#### Análisis local
+#### Análisis local con `clairctl`
 
-    clairctl analyze -l jgsqware/clairctl:master --log-level Debug
+TODO: realizar análisis remoto
+clairctl analyze -l jgsqware/clairctl:master --log-level Debug
 
-## Análisis Clair 2.1.7
+### Clair 2.1.7
 
-### Comandos de scan `clairctl oficial`
+#### Análisis remoto con `clairctl oficial`
 
 Clair no dispone de un `clairctl oficial` y en su lugar te redirige al cliente ubicado en el proyecto [jgsqware/clairctl](https://github.com/jgsqware/clairctl)
 
-### Comandos de scan `clairctl`
+#### Análisis local con `clairctl oficial`
 
-#### Análisis remoto
+Clair no dispone de un `clairctl oficial` y en su lugar te redirige al cliente ubicado en el proyecto [jgsqware/clairctl](https://github.com/jgsqware/clairctl)
+
+#### Análisis remoto con `clairctl`
 
 Debes logar primero el registro de imágenes si vas a analizar imágenes oficiales. El login debe hacerse dentro del contenedor por lo que se puede ejecutar este comando (previa sustitución de las variables)
 
     docker exec -it clairctl docker login -u ${username} -p ${password | token}
 
-##### vulnerables/web-dvwa
+* vulnerables/web-dvwa
 
-Comando para análisis (una vez ha cargado la base de datos)
+  Comando para análisis (una vez ha cargado la base de datos)
+  
+      docker exec clairctl clairctl analyze vulnerables/web-dvwa --log-level Debug
+  
+  Resultado:
+  
+      Image: docker.io/vulnerables/web-dvwa:latest
+   
+      Unknown: 0
+      Negligible: 8
+      Low: 1
+      Medium: 7
+      High: 3
+      Critical: 0
+      Defcon1: 0
+  
+  Comando para reporte
+  
+      docker exec clairctl clairctl report vulnerables/web-dvwa --log-level Debug
+  
+  [analysis-vulnerables-web-dvwa-latest.html](.clairctl/reports/html/  analysis-vulnerables-web-dvwa-latest-remoto.html)
 
-    docker exec clairctl clairctl analyze vulnerables/web-dvwa --log-level Debug
+* jgsqware/clairctl:master
 
-Resultado:
+  Comando para análisis:
+  
+      docker exec clairctl clairctl analyze jgsqware/clairctl:master --log-level Debug
+  
+  Resultado:
+  
+      Unknown: 0
+      Negligible: 0
+      Low: 0
+      Medium: 4
+      High: 5
+      Critical: 1
+      Defcon1: 0
+  
+  Comando para reporte:
+  
+      docker exec clairctl clairctl report jgsqware/clairctl:master --log-level Debug
+  
+  [analysis-jgsqware-clairctl-master.html](./clairctl/reports/html/analysis-jgsqware-clairctl-master-remoto.html)
 
-    Image: docker.io/vulnerables/web-dvwa:latest
- 
-    Unknown: 0
-    Negligible: 8
-    Low: 1
-    Medium: 7
-    High: 3
-    Critical: 0
-    Defcon1: 0
+#### Análisis local con `clairctl`
 
-Comando para reporte
+* vulnerables/web-dvwa (v)
 
-    docker exec clairctl clairctl report vulnerables/web-dvwa --log-level Debug
+  Comando para análisis local:
+  
+      docker exec clairctl clairctl analyze -l vulnerables/web-dvwa --log-level Debug
+  
+  Resultado:
+      
+       Unknown: 5
+       Negligible: 100
+       Low: 105
+       Medium: 218
+       High: 49
+       Critical: 4
+       Defcon1: 0
+  
+  Comando para reporte:
+  
+      docker exec clairctl clairctl report -l vulnerables/web-dvwa --log-level Debug
+  
+  Resultado:
+  
+  [analysis-vulnerables-web-dvwa-latest-local.html](clairctl/reports/html/analysis-vulnerables-web-dvwa-latest-local.html)
 
-[analysis-vulnerables-web-dvwa-latest.html](.clairctl/reports/html/analysis-vulnerables-web-dvwa-latest-remoto.html)
+* jgsqware/clairctl:master (V)
 
-##### jgsqware/clairctl:master
+      docker tag jgsqware/clairctl:master jgsqware/clairctl:latest
+  
+  Comando para análisis local:
+  
+      docker exec clairctl clairctl analyze -l jgsqware/clairctl --log-level Debug
+      
+  Resultado:
+      
+       Unknown: 0
+       Negligible: 0
+       Low: 0
+       Medium: 4
+       High: 5
+       Critical: 1
+       Defcon1: 0
+  
+  Comando para reporte:
+  
+      docker exec clairctl clairctl report -l jgsqware/clairctl --log-level Debug
+  
+  Resultado:
+  
+  [analysis-jgsqware-clairctl-latest-local.html](clairctl/reports/html/analysis-jgsqware-clairctl-latest-local.html)
 
-Comando para análisis:
+* alpine:3.14.1 (V)
 
-    docker exec clairctl clairctl analyze jgsqware/clairctl:master --log-level Debug
-
-Resultado:
-
-    Unknown: 0
-    Negligible: 0
-    Low: 0
-    Medium: 4
-    High: 5
-    Critical: 1
-    Defcon1: 0
-
-Comando para reporte:
-
-    docker exec clairctl clairctl report jgsqware/clairctl:master --log-level Debug
-
-[analysis-jgsqware-clairctl-master.html](./clairctl/reports/html/analysis-jgsqware-clairctl-master-remoto.html)
-
-#### Análisis local
-
-##### vulnerables/web-dvwa (v)
-
-Comando para análisis local:
-
-    docker exec clairctl clairctl analyze -l vulnerables/web-dvwa --log-level Debug
-
-Resultado:
-    
-     Unknown: 5
-     Negligible: 100
-     Low: 105
-     Medium: 218
-     High: 49
-     Critical: 4
-     Defcon1: 0
-
-Comando para reporte:
-
-    docker exec clairctl clairctl report -l vulnerables/web-dvwa --log-level Debug
-
-Resultado:
-
-[analysis-vulnerables-web-dvwa-latest-local.html](clairctl/reports/html/analysis-vulnerables-web-dvwa-latest-local.html)
-
-##### jgsqware/clairctl:master (V)
-
-    docker tag jgsqware/clairctl:master jgsqware/clairctl:latest
-
-Comando para análisis local:
-
-    docker exec clairctl clairctl analyze -l jgsqware/clairctl --log-level Debug
-    
-Resultado:
-    
-     Unknown: 0
-     Negligible: 0
-     Low: 0
-     Medium: 4
-     High: 5
-     Critical: 1
-     Defcon1: 0
-
-Comando para reporte:
-
-    docker exec clairctl clairctl report -l jgsqware/clairctl --log-level Debug
-
-Resultado:
-
-[analysis-jgsqware-clairctl-latest-local.html](clairctl/reports/html/analysis-jgsqware-clairctl-latest-local.html)
-
-##### alpine:3.14.1 (V)
-
-Primero debemos cambiar la etiqueta a latest (detalles en la sección de [errores](#recopilación-de-errores)):
-
-    docker tag alpine:3.14.1 alpine:latest
-
-Comando para análisis local:
-    
-    docker exec clairctl clairctl analyze -l alpine --log-level Debug
-
-Resultado:
-
-    Image: docker.io/alpine:latest
-     
-     Unknown: 0
-     Negligible: 0
-     Low: 1
-     Medium: 0
-     High: 0
-     Critical: 0
-     Defcon1: 0
-
-Comando para reporte:
-
-    docker exec clairctl clairctl report -l alpine --log-level Debug
-
-Resultado:
-
-[analysis-alpine-latest-local.html](clairctl/reports/html/analysis-alpine-latest-local.html)
+  Primero debemos cambiar la etiqueta a latest (detalles en la sección de [errores](#recopilación-de-errores)):
+  
+      docker tag alpine:3.14.1 alpine:latest
+  
+  Comando para análisis local:
+      
+      docker exec clairctl clairctl analyze -l alpine --log-level Debug
+  
+  Resultado:
+  
+      Image: docker.io/alpine:latest
+       
+       Unknown: 0
+       Negligible: 0
+       Low: 1
+       Medium: 0
+       High: 0
+       Critical: 0
+       Defcon1: 0
+  
+  Comando para reporte:
+  
+      docker exec clairctl clairctl report -l alpine --log-level Debug
+  
+  Resultado:
+  
+  [analysis-alpine-latest-local.html](clairctl/reports/html/analysis-alpine-latest-local.html)
 
 ## Recopilación de errores
 
-### Errores con Clair 4.20
+### Clair 4.20
 
 ##### Análisis local
 
@@ -411,7 +428,7 @@ Resultado:
         client quit unexpectedly
         2021-08-13 20:47:15.726099 C | cmd: pushing image "jgsqware/clairctl:master": receiving http error: 404
 
-### Errores con Clair 2.1.7
+### Clair 2.1.7
 
 #### Análisis remoto
 
