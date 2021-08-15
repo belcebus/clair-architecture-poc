@@ -256,9 +256,10 @@ Lo primero es añadir el docker registry 'registry' al /etc/hosts como localhost
 
   Resultado:
 
+TODO: resolver el error del registro y continuar con el análisis de las demás imágenes.
 
-
-TODO: realizar análisis local usando el docker registry
+* jgsqware/clairctl:master
+* alpine:3.14
 
 #### Análisis remoto con `clairctl`
 
