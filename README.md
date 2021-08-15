@@ -119,6 +119,7 @@ Levantamos el contenedor con la última imagen disponible y lo conectamos a la r
     jgsqware/clairctl:master
 
 ## clair (4.2.0)
+<!-- sha256:917df97fd182bf45d880649285b45e730a52e6cca4b70e3b0a810d4e39d43c9a -->
 
 Este el corazón del proceso, expone el API sonbre el que se lanzarán las consultas por parte de los clientes. También actualizará la base de datos con las vulnerablidades descargadas de los repositorios de vulnerabilidades oficiales.
 
@@ -130,10 +131,10 @@ Este contenedor también dispone de un cliente de Clair que llamaremos `clairctl
     --name clair \
     --network clair-network \
     --rm \
-    --volume ${PWD}/clair/config:/config:ro \
+    --volume ${PWD}/clair/config/config_v4.2.0.yaml:/config/config.yaml:ro \
     --volume ${PWD}/clair/reports:/reports:rw \
     --workdir /run \
-    quay.io/projectquay/clair:4.2.0@sha256:917df97fd182bf45d880649285b45e730a52e6cca4b70e3b0a810d4e39d43c9a \
+    quay.io/projectquay/clair:4.2.0 \
     -- /bin/clair
 
 ## Clair (v2.1.7)
