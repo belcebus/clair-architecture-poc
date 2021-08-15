@@ -304,7 +304,7 @@ Comando para reporte:
 
 Resultado:
 
-[analysis-jgsqware-clairctl-master-local.html](clairctl/reports/html/analysis-jgsqware-clairctl-master-local.html)
+[analysis-jgsqware-clairctl-latest-local.html](clairctl/reports/html/analysis-jgsqware-clairctl-latest-local.html)
 
 ##### alpine:3.14.1 (V)
 
