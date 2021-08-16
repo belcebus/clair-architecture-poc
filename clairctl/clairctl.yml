@@ -1,7 +1,7 @@
 clair:
   port: 6060
   healthPort: 6061
-  uri: http://clair
+  uri: http://localhost
   priority: Low
   report:
     path: /reports
@@ -11,4 +11,4 @@ clairctl:
   tempfolder: /tmp
 docker:
   insecure-registries:
-    - "registry:5000"
+    - "localhost:5000"

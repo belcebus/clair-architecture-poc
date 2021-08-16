@@ -6,12 +6,12 @@
   * 4.2.0
   * 2.1.7
 * Instalación
-  * Clair Network
   * Docker Registry
   * Postgres
   * Clairctl
   * Clair 4.2.0
     * Traza de finalización
+  * Clair 4.2.0 COREOS
   * Clair 2.1.7
     * Traza de finalización de carga de updaters
 * Análisis
@@ -42,6 +42,7 @@
   * Clair 2.1.7
 * Otros proyectos a revisar
 * Limpieza del entorno
+* Combinaciones ganadoras
 
 ## Arquitectura
 
@@ -53,18 +54,22 @@
 
 ![2.1.7](arquitectura/clair-arch-2.1.7.png)
 
+## Combinaciones ganadoras:
+  * Opción 1:
+    * docker registry (2.7.1)
+    * postgres (9.6.23)
+    * clair (4.2.0)
+  * Opción 2:
+    * postgres (9.6.23)
+    * Clair (v2.1.7)
+    * clairctl (master)
+
 ## Instalación
-
-### clair network
-
-Creamos la red para Clair y aquellos contenedores que necesitan conexión con Clair como vimos en el diagrama anterior.
-
-    docker network create clair-network
 
 ### docker registry (2.7.1)
 <!-- sha256:42043edfae481178f07aa077fa872fcc242e276d302f4ac2026d9d2eb65b955f -->
 
-Creamos el registro de imágenes docker para los análisis locales con el cliente `clairctl oficial`. Creamos un volumen de almacenamiento y lo conectamos a la red `clair-network`:
+Creamos el registro de imágenes docker para los análisis locales con el cliente `clairctl oficial` y su correspondiente volumen de almacenamiento:
 
     docker volume create registry-volume
 
@@ -72,8 +77,7 @@ Creamos el registro de imágenes docker para los análisis locales con el client
     --detach \
     --entrypoint /entrypoint.sh \
     --name registry \
-    --network clair-network \
-    -p 5000:5000 \
+    --network host\
     --rm \
     --volume registry-volume:/var/lib/registry:rw \
     registry:2.7.1 \
@@ -85,7 +89,7 @@ Creamos el registro de imágenes docker para los análisis locales con el client
 <!-- sha256:c72d0da357ccbe11f769b3b4319ec3281014447d1b6dd9f636cf9dfffe9ed258 -->
 
 <!--
-Levantanmos el contenedor y lo añadimos también a la red `clair-network`
+Levantanmos el contenedor y lo añadimos también a la red del anfitrión
 
     docker volume create postgres-volume
 
@@ -96,7 +100,7 @@ Levantanmos el contenedor y lo añadimos también a la red `clair-network`
     --env POSTGRES_PASSWORD=clair \
     --env POSTGRES_USER=clair \
     --name postgres \
-    --network clair-network \
+    --network host \
     --rm \
     --volume postgres-volume:/var/lib/postgresql/data:rw \
     postgres:alpine3.14 \
@@ -106,7 +110,7 @@ Levantanmos el contenedor y lo añadimos también a la red `clair-network`
 ### postgres (9.6.23)
 <!-- sha256:0c544a9de02082855b4ee592d59685403a8b51acdcd559cef4140ad9ef1396bd -->
 
-Levantanmos el contenedor y lo añadimos también a la red `clair-network`
+Levantanmos el contenedor y lo añadimos también a la red del anfitrión
 
     docker volume create postgres-volume
 
@@ -117,7 +121,7 @@ Levantanmos el contenedor y lo añadimos también a la red `clair-network`
     --env POSTGRES_PASSWORD=clair \
     --env POSTGRES_USER=clair \
     --name postgres \
-    --network clair-network \
+    --network host \
     --rm \
     --volume postgres-volume:/var/lib/postgresql/data:rw \
     postgres:9.6.23 \
@@ -133,7 +137,7 @@ Levantamos el contenedor con la última imagen disponible y lo conectamos a la r
     docker container run \
     --detach \
     --name clairctl \
-    --network clair-network \
+    --network host \
     --rm \
     --user root \
     --volume ${PWD}/clairctl/reports/:/reports/:rw \
@@ -154,7 +158,7 @@ Este contenedor también dispone de un cliente de Clair que llamaremos `clairctl
     --detach \
     --entrypoint /usr/local/bin/dumb-init \
     --name clair \
-    --network clair-network \
+    --network host \
     --rm \
     --volume ${PWD}/clair/config/config_v4.2.0.yaml:/config/config.yaml:ro \
     --volume ${PWD}/clair/reports:/reports:rw \
@@ -172,13 +176,13 @@ De carga de updaters
 
     ?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿
 
-### Clair 4.2.0 COREOS
+### clair 4.2.0 COREOS
 
     docker container run \
     --detach \
     --entrypoint /usr/local/bin/dumb-init \
     --name clair \
-    --network clair-network \
+    --network host \
     --rm \
     --volume ${PWD}/clair/config/config_v4.2.0.yaml:/config/config.yaml:ro \
     --volume ${PWD}/clair/reports:/reports:rw \
@@ -186,7 +190,7 @@ De carga de updaters
     quay.io/coreos/clair:v4.2.0 \
     -- /bin/clair
 
-### Clair (v2.1.7)
+### clair (v2.1.7)
 <!-- sha256:0962dd91c2f5de60ea2c0019fb275bc463fce6f59db96597e09e645627439909 --> 
 
     docker container run \
@@ -194,7 +198,7 @@ De carga de updaters
     --entrypoint /usr/bin/dumb-init \
     --name clair \
     --rm \
-    --network clair-network \
+    --network host \
     --volume ${PWD}/clair/config/config_v2.1.7.yaml:/etc/clair/config.yaml:ro \
     --volume ${PWD}/clair/reports:/reports:rw \
     --workdir /go/clair/ \
@@ -250,10 +254,6 @@ De carga de updaters
 
 #### Análisis local con `clairctl oficial`
 
-Lo primero es añadir el docker registry 'registry' al /etc/hosts como localhost
-
-    echo "127.0.0.1 registry" | sudo tee -a /etc/hosts
-
 * vulnerables/web-dvwa
 
   Descargar la imagen si no estaba ya descargada
@@ -262,24 +262,72 @@ Lo primero es añadir el docker registry 'registry' al /etc/hosts como localhost
 
   Renombrar la images para que suba al resitro local:
 
-      docker tag vulnerables/web-dvwa registry:5000/vulnerables/web-dvwa:latest
+      docker tag vulnerables/web-dvwa localhost:5000/vulnerables/web-dvwa:latest
 
   Subir la imagen al registro:
 
-      docker push registry:5000/vulnerables/web-dvwa:latest
+      docker push localhost:5000/vulnerables/web-dvwa:latest
 
-  Y ejecutar el análisis indicando el registry al que se ha subido la imagen:
+  Y ejecutar el análisis indicando el registry (localhost) al que se ha subido la imagen:
 
-      docker exec clair clairctl -D report registry:5000/vulnerables/web-dvwa:latest
+      docker exec clair clairctl -D report -o json localhost:5000/vulnerables/web-dvwa:latest |  jq > clair/reports/vulnerables_web-dvwa_latest_local.json
 
-  Resultado:
-      
-      ERR  error="Get \"https://registry:5000/v2/\": http: server gave HTTP response to HTTPS client"
+  Extracción de los códigos de vulnerabilidad
 
-TODO: resolver el error del registro y continuar con el análisis de las demás imágenes.
+      docker exec clair clairctl report \
+      -o json \
+      vulnerables/web-dvwa:latest \
+      | jq '.vulnerabilities[].name' > clair/reports/vulnerables_web-dvwa_latest_local_cves.txt
 
 * jgsqware/clairctl:master
+
+  Descargar la imagen si no estaba ya descargada
+
+    docker pull jgsqware/clairctl:master
+
+  Renombrar la images para que suba al resitro local:
+
+      docker tag jgsqware/clairctl:master localhost:5000/jgsqware/clairctl:master
+
+  Subir la imagen al registro:
+
+      docker push localhost:5000/jgsqware/clairctl:master
+
+  Y ejecutar el análisis indicando el registry (localhost) al que se ha subido la imagen:
+
+      docker exec clair clairctl -D report -o json localhost:5000/jgsqware/clairctl:master |  jq > clair/reports/jgsqware_clairctl_master_local.json
+
+  Extracción de los códigos de vulnerabilidad
+
+      docker exec clair clairctl report \
+      -o json \
+      jgsqware/clairctl:master \
+      | jq '.vulnerabilities[].name' > clair/reports/jgsqware_clairctl_master_local_cves.txt
+
 * alpine:3.14
+
+  Descargar la imagen si no estaba ya descargada
+
+    docker pull alpine:3.14
+
+  Renombrar la images para que suba al resitro local:
+
+      docker tag alpine:3.14 localhost:5000/alpine:3.14
+
+  Subir la imagen al registro:
+
+      docker push localhost:5000/alpine:3.14
+
+  Y ejecutar el análisis indicando el registry (localhost) al que se ha subido la imagen:
+
+      docker exec clair clairctl -D report -o json localhost:5000/alpine:3.14 |  jq > clair/reports/alpine_3.14_local.json
+
+  Extracción de los códigos de vulnerabilidad
+
+      docker exec clair clairctl report \
+      -o json \
+      alpine:3.14 \
+      | jq '.vulnerabilities[].name' > clair/reports/alpine_3.14_local_cves.txt
 
 #### Análisis remoto con `clairctl`
 
@@ -516,6 +564,8 @@ Debes logar primero el registro de imágenes si vas a analizar imágenes oficial
       2021-08-15T19:02:11Z DBG fetching ref=registry:5000/vulnerables/web-dvwa:latest
       2021-08-15T19:02:11Z DBG  error="Get \"https://registry:5000/v2/\": http: server gave HTTP response to HTTPS client" ref=registry:5000/vulnerables/web-dvwa:latest
       2021-08-15T19:02:11Z ERR  error="Get \"https://registry:5000/v2/\": http: server gave HTTP response to HTTPS client"
+
+  Se soluciona usando la red del anfitrion para todos los contenedores. Esto hace que al mandar la consulta a localhost se haga con protocolo http y se espere respuesta también en http.
 
 ### Clair 2.1.7
 
