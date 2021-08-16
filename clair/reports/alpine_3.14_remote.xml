@@ -1,0 +1,21 @@
+<testsuites>
+    <testsuite name="alpine:3.14" tests="14" errors="0" failures="0">
+        <properties>
+            <property name="manifest" value="sha256:be9bdc0ef8e96dbc428dc189b31e2e3b05523d96d12ed627c37aa2936653258c"></property>
+        </properties>
+        <testcase name="ca-certificates-bundle 20191127-r5"></testcase>
+        <testcase name="busybox 1.33.1-r3"></testcase>
+        <testcase name="musl-utils 1.2.2-r3"></testcase>
+        <testcase name="libc-utils 0.7.2-r3"></testcase>
+        <testcase name="musl 1.2.2-r3"></testcase>
+        <testcase name="scanelf 1.3.2-r0"></testcase>
+        <testcase name="libretls 3.3.3p1-r2"></testcase>
+        <testcase name="zlib 1.2.11-r3"></testcase>
+        <testcase name="alpine-baselayout 3.2.0-r16"></testcase>
+        <testcase name="alpine-keys 2.3-r1"></testcase>
+        <testcase name="ssl_client 1.33.1-r3"></testcase>
+        <testcase name="libssl1.1 1.1.1k-r0"></testcase>
+        <testcase name="apk-tools 2.12.7-r0"></testcase>
+        <testcase name="libcrypto1.1 1.1.1k-r0"></testcase>
+    </testsuite>
+</testsuites>

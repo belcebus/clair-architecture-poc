@@ -1,0 +1,112 @@
+<testsuites>
+    <testsuite name="localhost:5000/vulnerables/web-dvwa:latest" tests="81" errors="0" failures="12">
+        <properties>
+            <property name="manifest" value="sha256:dae203fe11646a86937bf04db0079adef295f426da68a92b40e3b181f337daa7"></property>
+        </properties>
+        <testcase name="lsb-base 9.20161125"></testcase>
+        <testcase name="diffutils 1:3.5-3"></testcase>
+        <testcase name="util-linux 2.29.2-1">
+            <failure>Found the following vulnerabilities:&#xA;&#x9;CVE-2021-37600&#xA;&#x9;CVE-2018-7738&#xA;&#x9;CVE-2016-2779&#xA;&#x9;CVE-2007-0822</failure>
+        </testcase>
+        <testcase name="libpam-runtime 1.1.8-3.6"></testcase>
+        <testcase name="libtinfo5 6.0+20161126-1+deb9u1"></testcase>
+        <testcase name="libselinux1 2.6-3+b3"></testcase>
+        <testcase name="libgcc1 1:6.3.0-18"></testcase>
+        <testcase name="libattr1 1:2.4.47-2+b2"></testcase>
+        <testcase name="apt 1.4.8">
+            <failure>Found the following vulnerabilities:&#xA;&#x9;CVE-2020-3810&#xA;&#x9;CVE-2020-27350&#xA;&#x9;CVE-2019-3462&#xA;&#x9;CVE-2018-0501&#xA;&#x9;CVE-2011-3374</failure>
+        </testcase>
+        <testcase name="perl-base 5.24.1-3+deb9u2"></testcase>
+        <testcase name="libsystemd0 232-25+deb9u1"></testcase>
+        <testcase name="ncurses-bin 6.0+20161126-1+deb9u1"></testcase>
+        <testcase name="passwd 1:4.4-4.1"></testcase>
+        <testcase name="debianutils 4.8.1.1"></testcase>
+        <testcase name="libpcre3 2:8.39-3"></testcase>
+        <testcase name="inetutils-ping 2:1.9.4-2+b1"></testcase>
+        <testcase name="ncurses-base 6.0+20161126-1+deb9u1"></testcase>
+        <testcase name="libaudit1 1:2.6.7-2"></testcase>
+        <testcase name="libudev1 232-25+deb9u1"></testcase>
+        <testcase name="dash 0.5.8-2.4">
+            <failure>Found the following vulnerabilities:&#xA;&#x9;CVE-2009-0854</failure>
+        </testcase>
+        <testcase name="gcc-6-base 6.3.0-18"></testcase>
+        <testcase name="gpgv 2.1.18-8~deb9u1"></testcase>
+        <testcase name="libc6 2.24-11+deb9u1"></testcase>
+        <testcase name="libaudit-common 1:2.6.7-2"></testcase>
+        <testcase name="libc-bin 2.24-11+deb9u1"></testcase>
+        <testcase name="tzdata 2017b-1"></testcase>
+        <testcase name="dpkg 1.18.24"></testcase>
+        <testcase name="adduser 3.115"></testcase>
+        <testcase name="base-files 9.9+deb9u2">
+            <failure>Found the following vulnerabilities:&#xA;&#x9;CVE-2018-6557&#xA;&#x9;CVE-2010-0834</failure>
+        </testcase>
+        <testcase name="sysvinit-utils 2.88dsf-59.9"></testcase>
+        <testcase name="libcomerr2 1.43.4-2"></testcase>
+        <testcase name="libblkid1 2.29.2-1"></testcase>
+        <testcase name="base-passwd 3.5.43"></testcase>
+        <testcase name="libsepol1 2.6-2"></testcase>
+        <testcase name="mawk 1.3.3-17+b3"></testcase>
+        <testcase name="libfdisk1 2.29.2-1"></testcase>
+        <testcase name="libstdc++6 6.3.0-18"></testcase>
+        <testcase name="libustr-1.0-1 1.0.4-6"></testcase>
+        <testcase name="libdebconfclient0 0.227"></testcase>
+        <testcase name="libpam-modules-bin 1.1.8-3.6"></testcase>
+        <testcase name="sed 4.4-1"></testcase>
+        <testcase name="libmnl0 1.0.4-2"></testcase>
+        <testcase name="libapt-pkg5.0 1.4.8"></testcase>
+        <testcase name="bsdutils 1:2.29.2-1"></testcase>
+        <testcase name="mount 2.29.2-1"></testcase>
+        <testcase name="tar 1.29b-1.1">
+            <failure>Found the following vulnerabilities:&#xA;&#x9;CVE-2021-20193&#xA;&#x9;CVE-2019-9923&#xA;&#x9;CVE-2018-20482&#xA;&#x9;CVE-2005-2541</failure>
+        </testcase>
+        <testcase name="bash 4.4-5">
+            <failure>Found the following vulnerabilities:&#xA;&#x9;CVE-2019-18276&#xA;&#x9;CVE-2010-0002</failure>
+        </testcase>
+        <testcase name="zlib1g 1:1.2.8.dfsg-5"></testcase>
+        <testcase name="libncursesw5 6.0+20161126-1+deb9u1"></testcase>
+        <testcase name="e2fslibs 1.43.4-2"></testcase>
+        <testcase name="liblz4-1 0.0~r131-2+b1"></testcase>
+        <testcase name="libelf1 0.168-1"></testcase>
+        <testcase name="debian-archive-keyring 2017.5"></testcase>
+        <testcase name="libcap-ng0 0.7.7-3+b1"></testcase>
+        <testcase name="libbz2-1.0 1.0.6-8.1"></testcase>
+        <testcase name="libmount1 2.29.2-1"></testcase>
+        <testcase name="login 1:4.4-4.1"></testcase>
+        <testcase name="libdb5.3 5.3.28-12+deb9u1"></testcase>
+        <testcase name="multiarch-support 2.24-11+deb9u1"></testcase>
+        <testcase name="iproute2 4.9.0-1">
+            <failure>Found the following vulnerabilities:&#xA;&#x9;CVE-2019-20795</failure>
+        </testcase>
+        <testcase name="libuuid1 2.29.2-1"></testcase>
+        <testcase name="libgpg-error0 1.26-2"></testcase>
+        <testcase name="libsmartcols1 2.29.2-1"></testcase>
+        <testcase name="netbase 5.4"></testcase>
+        <testcase name="coreutils 8.26-3">
+            <failure>Found the following vulnerabilities:&#xA;&#x9;CVE-2017-18018&#xA;&#x9;CVE-2016-2781&#xA;&#x9;CVE-2015-4042&#xA;&#x9;CVE-2015-4041&#xA;&#x9;CVE-2013-0223&#xA;&#x9;CVE-2013-0222&#xA;&#x9;CVE-2013-0221&#xA;&#x9;CVE-2009-4135</failure>
+        </testcase>
+        <testcase name="hostname 3.18+b1"></testcase>
+        <testcase name="libss2 1.43.4-2"></testcase>
+        <testcase name="e2fsprogs 1.43.4-2">
+            <failure>Found the following vulnerabilities:&#xA;&#x9;CVE-2019-5188&#xA;&#x9;CVE-2019-5094</failure>
+        </testcase>
+        <testcase name="libpam-modules 1.1.8-3.6"></testcase>
+        <testcase name="init-system-helpers 1.48"></testcase>
+        <testcase name="gzip 1.6-5+b1">
+            <failure>Found the following vulnerabilities:&#xA;&#x9;CVE-2004-0603&#xA;&#x9;CVE-2004-1349</failure>
+        </testcase>
+        <testcase name="libsemanage1 2.6-2"></testcase>
+        <testcase name="debconf 1.5.61"></testcase>
+        <testcase name="libsemanage-common 2.6-2"></testcase>
+        <testcase name="grep 2.27-2"></testcase>
+        <testcase name="liblzma5 5.2.2-1.2+b1"></testcase>
+        <testcase name="libacl1 2.2.52-3+b1"></testcase>
+        <testcase name="libgcrypt20 1.7.6-2+deb9u2">
+            <failure>Found the following vulnerabilities:&#xA;&#x9;CVE-2021-33560&#xA;&#x9;CVE-2021-3345&#xA;&#x9;CVE-2019-13627&#xA;&#x9;CVE-2018-0495</failure>
+        </testcase>
+        <testcase name="findutils 4.6.0+git+20161106-2"></testcase>
+        <testcase name="sensible-utils 0.0.9">
+            <failure>Found the following vulnerabilities:&#xA;&#x9;CVE-2017-17512</failure>
+        </testcase>
+        <testcase name="libpam0g 1.1.8-3.6"></testcase>
+    </testsuite>
+</testsuites>

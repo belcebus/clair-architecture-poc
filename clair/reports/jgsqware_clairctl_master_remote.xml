@@ -1,0 +1,24 @@
+<testsuites>
+    <testsuite name="jgsqware/clairctl:master" tests="15" errors="0" failures="1">
+        <properties>
+            <property name="manifest" value="sha256:663236e4373c4857e20d4e568eff3280657b9b97648b4e510484d4ee4ff64bef"></property>
+        </properties>
+        <testcase name="alpine-keys 1.3-r0"></testcase>
+        <testcase name="busybox 1.25.1-r1"></testcase>
+        <testcase name="libressl2.4-libssl 2.4.4-r0"></testcase>
+        <testcase name="apk-tools 2.6.9-r0"></testcase>
+        <testcase name="libssh2 1.7.0-r2"></testcase>
+        <testcase name="musl 1.1.15-r8"></testcase>
+        <testcase name="libressl2.4-libcrypto 2.4.4-r0"></testcase>
+        <testcase name="alpine-baselayout 3.0.4-r0"></testcase>
+        <testcase name="libcurl 7.58.0-r1"></testcase>
+        <testcase name="musl-utils 1.1.15-r8"></testcase>
+        <testcase name="scanelf 1.1.6-r0"></testcase>
+        <testcase name="libc-utils 0.7-r1"></testcase>
+        <testcase name="ca-certificates 20161130-r1"></testcase>
+        <testcase name="curl 7.58.0-r1">
+            <failure>Found the following vulnerabilities:&#xA;&#x9;CVE-2018-0500&#xA;&#x9;CVE-2018-1000122&#xA;&#x9;CVE-2018-1000121&#xA;&#x9;CVE-2018-1000120&#xA;&#x9;CVE-2018-14618&#xA;&#x9;CVE-2018-16842&#xA;&#x9;CVE-2018-16840&#xA;&#x9;CVE-2018-16839&#xA;&#x9;CVE-2018-1000301&#xA;&#x9;CVE-2018-1000300</failure>
+        </testcase>
+        <testcase name="zlib 1.2.11-r0"></testcase>
+    </testsuite>
+</testsuites>
