@@ -242,6 +242,10 @@ Lo primero es añadir el docker registry 'registry' al /etc/hosts como localhost
 
 * vulnerables/web-dvwa
 
+  Descargar la imagen si no estaba ya descargada
+
+    docker pull vulnerables/web-dvwa:latest
+
   Renombrar la images para que suba al resitro local:
 
       docker tag vulnerables/web-dvwa registry:5000/vulnerables/web-dvwa:latest
@@ -255,6 +259,8 @@ Lo primero es añadir el docker registry 'registry' al /etc/hosts como localhost
       docker exec clair clairctl -D report registry:5000/vulnerables/web-dvwa:latest
 
   Resultado:
+      
+      ERR  error="Get \"https://registry:5000/v2/\": http: server gave HTTP response to HTTPS client"
 
 TODO: resolver el error del registro y continuar con el análisis de las demás imágenes.
 
