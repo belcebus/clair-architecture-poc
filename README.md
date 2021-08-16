@@ -172,6 +172,20 @@ De carga de updaters
 
     ?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿
 
+### Clair 4.2.0 COREOS
+
+    docker container run \
+    --detach \
+    --entrypoint /usr/local/bin/dumb-init \
+    --name clair \
+    --network clair-network \
+    --rm \
+    --volume ${PWD}/clair/config/config_v4.2.0.yaml:/config/config.yaml:ro \
+    --volume ${PWD}/clair/reports:/reports:rw \
+    --workdir /run \
+    quay.io/coreos/clair:v4.2.0 \
+    -- /bin/clair
+
 ### Clair (v2.1.7)
 <!-- sha256:0962dd91c2f5de60ea2c0019fb275bc463fce6f59db96597e09e645627439909 --> 
 
@@ -270,6 +284,21 @@ TODO: resolver el error del registro y continuar con el análisis de las demás 
 #### Análisis remoto con `clairctl`
 
 __No es compatible con el API de Clair 4.2.0__
+
+Comando: 
+
+    docker exec clairctl clairctl analyze vulnerables/web-dvwa --log-level Debug
+
+Resultado:
+
+    021-08-16 09:34:13.975088 I | clair: Pushing Layer 1/8 [sha256:3e17c]
+    2021-08-16 09:34:13.975276 D | clair: Saving sha256:3e17c6eae66cd23c59751c8d8f5eaf7044e0611dc5cebb12b1273be07cdac242[https://registry-1.docker.io/v2]
+    2021-08-16 09:34:13.975960 D | clair: auth.insecureSkipVerify: true
+    2021-08-16 09:34:13.976195 D | clair: request.URL.String(): https://registry-1.docker.io/v2/vulnerables/web-dvwa/blobs/sha256:3e17c6eae66cd23c59751c8d8f5eaf7044e0611dc5cebb12b1273be07cdac242
+    2021-08-16 09:34:14.430923 I | clair: pull from clair is unauthorized
+    2021-08-16 09:34:15.096717 I | clair: adding layer 1/8 [sha256:3e17c]: receiving http error: 404
+    client quit unexpectedly
+    2021-08-16 09:34:15.096819 C | cmd: pushing image "vulnerables/web-dvwa:latest": receiving http error: 404
 
 #### Análisis local con `clairctl`
 
