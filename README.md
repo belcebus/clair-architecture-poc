@@ -5,6 +5,7 @@
 * Arquitectura
   * 4.2.0
   * 2.1.7
+* Combinaciones ganadoras
 * Instalación
   * Docker Registry
   * Postgres
@@ -20,10 +21,12 @@
       * vulnerables/web-dvwa
       * jgsqware/clairctl
       * alpine:3.14
+      * ubuntu:14.04
     * Análisis local `clairctl oficial`
       * vulnerables/web-dvwa
       * jgsqware/clairctl
       * alpine:3.14
+      * ubuntu:14.04
     * Análisis remoto `clairctl`
     * Análisis local `clairctl`
   * Clair 2.1.7
@@ -42,7 +45,7 @@
   * Clair 2.1.7
 * Otros proyectos a revisar
 * Limpieza del entorno
-* Combinaciones ganadoras
+* Severidad unknow
 
 ## Arquitectura
 
@@ -252,6 +255,17 @@ De carga de updaters
       alpine:3.14 \
       | jq '.vulnerabilities[].name' > clair/reports/alpine_3.14_remote_cves.txt
 
+* ubuntu:14.04
+
+      docker exec clair clairctl report -o json ubuntu:14.04 | jq > clair/reports/ubuntu_14.04_remote.json
+
+    Extracción de los códigos de vulnerabilidad
+
+      docker exec clair clairctl report \
+      -o json \
+      ubuntu:16.04 \
+      | jq '.vulnerabilities[].name' > clair/reports/ubuntu_14.04_remote_cves.txt
+
 #### Análisis local con `clairctl oficial`
 
 * vulnerables/web-dvwa
@@ -328,6 +342,33 @@ De carga de updaters
       -o json \
       alpine:3.14 \
       | jq '.vulnerabilities[].name' > clair/reports/alpine_3.14_local_cves.txt
+
+* ubuntu:14.04
+
+  Descargar la imagen si no estaba ya descargada
+
+    docker pull ubuntu:14.04
+
+  Renombrar la images para que suba al resitro local:
+
+      docker tag ubuntu:14.04 localhost:5000/ubuntu:14.04
+
+  Subir la imagen al registro:
+
+      docker push localhost:5000/ubuntu:14.04
+
+  Y ejecutar el análisis indicando el registry (localhost) al que se ha subido la imagen:
+
+      docker exec clair clairctl -D report -o json localhost:5000/ubuntu:14.04 |  jq > clair/reports/ubuntu_14.04_local.json
+
+  Extracción de los códigos de vulnerabilidad
+
+      docker exec clair clairctl report \
+      -o json \
+      ubuntu:14.04 \
+      | jq '.vulnerabilities[].name' > clair/reports/ubuntu_14.04_local_cves.txt
+
+
 
 #### Análisis remoto con `clairctl`
 
@@ -653,3 +694,25 @@ https://github.com/genuinetools/reg#vulnerability-reports
     docker stop clairctl clair postgres registry
     docker network prune -f
     docker volume prune -f
+
+## Severidad unknow
+
+¿Por qué mis reportes tienen como tipo de severidad el valor 'unknow' y vacío?
+
+    "4464": {
+      "id": "4464",
+      "updater": "alpine-main-v3.5-updater",
+      "name": "CVE-2018-1000122",
+      "description": "",
+      "issued": "0001-01-01T00:00:00Z",
+      "links": "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-1000122",
+      "severity": "",
+      "normalized_severity": "Unknown",
+      "package": {
+        "id": "",
+        "name": "curl",
+        "version": "",
+        "kind": "binary"
+      },
+
+Se debe a que algunas bases de datos de vulnerabilidades, principalmente las de Alpine y Debian no proporcionan información al respecto. En ese caso, Clair mapea una severidad vacía como 'unknow'. Clair dispone de esta información en su [documentación](https://quay.github.io/claircore/concepts/severity_mapping.html)

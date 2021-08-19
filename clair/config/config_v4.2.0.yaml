@@ -16,6 +16,7 @@ updaters:
   sets:
     - "debian"
     - "alpine"
+    - "ubuntu"
 matchers:
   disable_updaters: false
   config:
