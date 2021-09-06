@@ -13,6 +13,8 @@ matcher:
   run: ""
   migrations: true
 updaters:
+  sets:
+    - rhel
   filter: 'RHEL7.*'
 
 matchers:
